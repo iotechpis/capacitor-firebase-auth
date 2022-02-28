@@ -19,7 +19,7 @@ const plugin: CapacitorFirebaseAuthPlugin = CapacitorFirebaseAuth;
  * @param providerId The provider identification.
  * @param data The provider additional information (optional).
  */
-export const cfaSignIn = (providerId: string, data?: SignInOptions): Observable<firebase.User> => {
+export const cfaSignIn = (providerId: string, data?: SignInOptions): Observable<firebase.auth.UserCredential> => {
 	const googleProvider = new firebase.auth.GoogleAuthProvider().providerId;
 	const facebookProvider = new firebase.auth.FacebookAuthProvider().providerId;
 	const twitterProvider = new firebase.auth.TwitterAuthProvider().providerId;
@@ -46,7 +46,7 @@ export const cfaSignIn = (providerId: string, data?: SignInOptions): Observable<
 /**
  * Call the Google sign in method on native layer and sign in on web layer with retrieved credentials.
  */
-export const cfaSignInGoogle = (): Observable<firebase.User> => {
+export const cfaSignInGoogle = (): Observable<firebase.auth.UserCredential> => {
 	return new Observable(observer => {
 		// get the provider id
 		const providerId = firebase.auth.GoogleAuthProvider.PROVIDER_ID;
@@ -62,7 +62,7 @@ export const cfaSignInGoogle = (): Observable<firebase.User> => {
 					if(!userCredential.user) {
 						throw new Error('Firebase User was not received.')
 					}
-					observer.next(userCredential.user);
+					observer.next(userCredential);
 					observer.complete();
 				})
 				.catch((reject: any) => {
@@ -77,7 +77,7 @@ export const cfaSignInGoogle = (): Observable<firebase.User> => {
 /**
  * Call the Twitter sign in method on native and sign in on web layer with retrieved credentials.
  */
-export const cfaSignInTwitter = (): Observable<firebase.User> => {
+export const cfaSignInTwitter = (): Observable<firebase.auth.UserCredential> => {
 	return new Observable(observer => {
 		// get the provider id
 		const providerId = firebase.auth.TwitterAuthProvider.PROVIDER_ID;
@@ -93,7 +93,7 @@ export const cfaSignInTwitter = (): Observable<firebase.User> => {
 					if(!userCredential.user) {
 						throw new Error('Firebase User was not received.')
 					}
-					observer.next(userCredential.user);
+					observer.next(userCredential);
 					observer.complete();
 				})
 				.catch((reject: any) => observer.error(reject));
@@ -105,7 +105,7 @@ export const cfaSignInTwitter = (): Observable<firebase.User> => {
 /**
  * Call the Facebook sign in method on native and sign in on web layer with retrieved credentials.
  */
-export const cfaSignInFacebook = (): Observable<firebase.User> => {
+export const cfaSignInFacebook = (): Observable<firebase.auth.UserCredential> => {
 	return new Observable(observer => {
 		// get the provider id
 		const providerId = firebase.auth.FacebookAuthProvider.PROVIDER_ID;
@@ -121,7 +121,7 @@ export const cfaSignInFacebook = (): Observable<firebase.User> => {
 					if(!userCredential.user) {
 						throw new Error('Firebase User was not received.')
 					}
-					observer.next(userCredential.user);
+					observer.next(userCredential);
 					observer.complete();
 				})
 				.catch((reject: any) => observer.error(reject));
@@ -135,7 +135,7 @@ export const cfaSignInAppleProvider = 'apple.com';
 /**
  * Call the Apple sign in method on native and sign in on web layer with retrieved credentials.
  */
-export const cfaSignInApple = (): Observable<firebase.User> => {
+export const cfaSignInApple = (): Observable<firebase.auth.UserCredential> => {
 	return new Observable(observer => {
 		// native sign in
 		plugin.signIn<AppleSignInResult>({ providerId: cfaSignInAppleProvider }).then((result: AppleSignInResult) => {
@@ -153,7 +153,7 @@ export const cfaSignInApple = (): Observable<firebase.User> => {
 					if(!userCredential.user) {
 						throw new Error('Firebase User was not received.')
 					}
-					observer.next(userCredential.user);
+					observer.next(userCredential);
 					observer.complete();
 				})
 				.catch((reject: any) => observer.error(reject));
@@ -166,7 +166,7 @@ export const cfaSignInApple = (): Observable<firebase.User> => {
  * @param phone The user phone number.
  * @param verificationCode The verification code sent by SMS (optional).
  */
-export const cfaSignInPhone = (phone: string, verificationCode?: string): Observable<firebase.User> => {
+export const cfaSignInPhone = (phone: string, verificationCode?: string): Observable<firebase.auth.UserCredential> => {
 	return new Observable(observer => {
 		// get the provider id
 		const providerId = firebase.auth.PhoneAuthProvider.PROVIDER_ID;
@@ -186,7 +186,7 @@ export const cfaSignInPhone = (phone: string, verificationCode?: string): Observ
 					if(!userCredential.user) {
 						throw new Error('Firebase User was not received.')
 					}
-					observer.next(userCredential.user);
+					observer.next(userCredential);
 					observer.complete();
 				})
 				.catch((reject: any) => observer.error(reject));
