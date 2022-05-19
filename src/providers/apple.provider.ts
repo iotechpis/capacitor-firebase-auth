@@ -1,16 +1,12 @@
-import 'firebase/auth';
+import { OAuthProvider, getAuth, signInWithPopup } from 'firebase/auth';
 
-import firebase from 'firebase/app';
+import { SignInOptions } from '../definitions';
 
-import { AppleSignInResult, SignInOptions } from '../definitions';
 
-import OAuthCredential = firebase.auth.OAuthCredential;
-
-export const appleSignInWeb: (options: { providerId: string, data?: SignInOptions }) => Promise<AppleSignInResult>
+export const appleSignInWeb: (options: { providerId: string, data?: SignInOptions }) => Promise<any>
     = async () => {
-        const provider = new firebase.auth.OAuthProvider('apple.com');
-        firebase.auth().useDeviceLanguage();
-        const userCredential = await firebase.auth().signInWithPopup(provider);
-        const credential = userCredential?.credential as OAuthCredential;
-        return new AppleSignInResult(credential.idToken as string, '', credential.accessToken as string, credential.secret ?? "");
+        const provider = new OAuthProvider('apple.com');
+        getAuth().useDeviceLanguage();
+        const userCredential = await signInWithPopup(getAuth(), provider);
+        return userCredential;
     }
